@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('document_number')->unique();
             $table->string('asset_number');
-            $table->string('loc_number')->nullable();
             $table->string('name');
             $table->unsignedBigInteger('device_id');
             $table->unsignedBigInteger('software_id');

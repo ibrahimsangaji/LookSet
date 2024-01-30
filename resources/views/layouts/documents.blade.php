@@ -34,7 +34,7 @@
                                         <a href="#" class="btn btn-primary mr-4">
                                             <i class="bi bi-printer-fill"></i>
                                         </a>
-                                        <a href="#" class="btn btn-primary">
+                                        <a href="{{ route('documents.detail', $document->id) }}" class="btn btn-primary">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
                                     </td>

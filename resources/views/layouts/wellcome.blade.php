@@ -101,4 +101,12 @@
         @endif
     </div>
 </div>
+
+<script>
+    var totalAssets = {{ $totalAssets }};
+    var totalInbound = {{ $totalInbound }};
+    var totalOutbound = 0;
+    var totalRepair = 0;
+    var totalLost = 0;
+</script>
 @endsection

@@ -32,7 +32,7 @@
                 <div class="mb-3 row">
                     <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value=" " aria-label="Disabled input example" disabled readonly>
+                        <input type="text" class="form-control" value="Name" aria-label="Disabled input example" disabled readonly>
                     </div>
                 </div>
                 <div class="mb-3 row">

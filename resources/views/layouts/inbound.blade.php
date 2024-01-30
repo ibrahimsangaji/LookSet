@@ -4,6 +4,20 @@
     <div class="container-fluid">
         <div class="container">
 
+            <!-- Tampilkan pesan sukses jika ada -->
+            @if (Session::has('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            @endif
+
+            <!-- Tampilkan pesan error jika ada -->
+            @if (Session::has('error'))
+                <div class="alert alert-danger">
+                    {{ Session::get('error') }}
+                </div>
+            @endif
+
             <div class="row mt-5">
                 <div class="col-2">
                     <a href="/inbounds" style="text-decoration: none; color: black;">

@@ -40,7 +40,7 @@ var myPieChartAmount = new Chart(ctx, {
   data: {
     labels: ["Amount"],
     datasets: [{
-      data: [99],
+      data: [totalAssets],
       backgroundColor: ['#4e73df'],
       hoverBackgroundColor: ['#2e59d9'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -66,12 +66,14 @@ var myPieChartAmount = new Chart(ctx, {
 });
 
 var ctx = document.getElementById("myPieChartInbound");
+var dataTotalInbound = totalInbound ?? 0;
+var penguranganInbound = totalAssets - dataTotalInbound;
 var myPieChartInbound = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Inbound", "Trace"],
+    labels: ["Inbound", "Remaining"],
     datasets: [{
-      data: [30, 69],
+      data: [dataTotalInbound, penguranganInbound],
       backgroundColor: ['#1cc88a', '#D7DBDD'],
       hoverBackgroundColor: ['#17a673', '#BDC3C7'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -97,12 +99,14 @@ var myPieChartInbound = new Chart(ctx, {
 });
 
 var ctx = document.getElementById("myPieChartOutbound");
+var dataTotalOutbound = totalOutbound ?? 0;
+var penguranganOutbound = totalAssets - dataTotalOutbound;
 var myPieChartOutbound = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Outbound", "Trace"],
+    labels: ["Outbound", "Remaining"],
     datasets: [{
-      data: [60, 39],
+      data: [dataTotalOutbound, penguranganOutbound],
       backgroundColor: ['#36b9cc', '#D7DBDD'],
       hoverBackgroundColor: ['#2c9faf', '#BDC3C7'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -128,12 +132,14 @@ var myPieChartOutbound = new Chart(ctx, {
 });
 
 var ctx = document.getElementById("myPieChartRepair");
+var dataTotalRepair = totalRepair ?? 0;
+var penguranganRepair = totalAssets - dataTotalRepair;
 var myPieChartRepair = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Repair", "Trace"],
+    labels: ["Repair", "Remaining"],
     datasets: [{
-      data: [4, 94],
+      data: [dataTotalRepair, penguranganRepair],
       backgroundColor: ['#ffc107', '#D7DBDD'],
       hoverBackgroundColor: ['#daa609', '#BDC3C7'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -159,12 +165,14 @@ var myPieChartRepair = new Chart(ctx, {
 });
 
 var ctx = document.getElementById("myPieChartLost");
+var dataTotalLost = totalLost ?? 0;
+var penguranganLost = totalAssets - dataTotalLost;
 var myPieChartLost = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Lost", "Trace"],
+    labels: ["Lost", "Remaining"],
     datasets: [{
-      data: [5, 94],
+      data: [dataTotalLost, penguranganLost],
       backgroundColor: ['#dc3545', '#D7DBDD'],
       hoverBackgroundColor: ['#dd0b20', '#BDC3C7'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",

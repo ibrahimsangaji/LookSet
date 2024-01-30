@@ -79,7 +79,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="featurs-item text-center rounded p-4">
-                        <a class="btn px-5 py-3 shadow" href=" " role="button">
+                        <a class="btn px-5 py-3 shadow" href="/outbounds" role="button">
                             <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
                                 <i class="fas bi-cart-fill fa-3x text-white"></i>
                             </div>

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_statuses_id');
             $table->unsignedBigInteger('conditions_id');
             $table->text('explanation')->nullable();
-            $table->string('approval_status')->default('pending');
+            $table->string('approval_status')->default('Pending');
             $table->unsignedBigInteger('create_user_id');
             $table->unsignedBigInteger('approval_user_id')->nullable();
             $table->timestamps();

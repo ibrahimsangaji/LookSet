@@ -69,6 +69,25 @@
         <div id="content">
             <div class="container-fluid">
 
+                <!-- Tampilkan pesan sukses jika ada -->
+                @if (Session::has('success'))
+                    <div class="alert alert-success">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+
+                <!-- Tampilkan pesan error jika ada -->
+                @if (Session::has('error'))
+                    <div class="alert alert-danger">
+                        {{ Session::get('error') }}
+
+                        @if ($e = Session::get('exception'))
+                            <br>
+                            <small>{{ $e->getMessage() }}</small>
+                        @endif
+                    </div>
+                @endif
+
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">Rack</h1>
@@ -96,13 +115,35 @@
                                                 <i class="bi bi-wrench-adjustable-circle-fill"></i>
                                             </a>
                                             {{-- delete --}}
-                                            <form action="{{ route('rack.delete', $rack->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger text-link">
-                                                    <i class="bi bi-x-circle-fill"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger text-link" data-toggle="modal" data-target="#rejectModal{{ $rack->id }}">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                            </button>
+
+                                            <!-- Modal for Delete Confirmation -->
+                                            <div class="modal fade" id="rejectModal{{ $rack->id }}" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="rejectModalLabel">Delete Confirmation</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to delete rack {{ $rack->name }}?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <form method="post" action="{{ route('rack.delete', $rack->id) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -114,5 +155,6 @@
             </div>
         </div>
     </div>
+
 </div>
 @endsection

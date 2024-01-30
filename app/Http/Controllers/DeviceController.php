@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class DeviceController extends Controller
@@ -54,7 +55,17 @@ class DeviceController extends Controller
 
     public function destroy(Device $device)
     {
-        $device->delete();
-        return redirect('/catalog/device')->with('success', 'Device deleted successfully!');
+        try {
+            $device->delete();
+            return redirect('/catalog/device')->with('success', 'Device deleted successfully!');
+        } catch (QueryException $e) {
+            // Menggunakan kode SQLSTATE[23000] untuk mendeteksi kesalahan referensi kunci asing
+            if ($e->getCode() == '23000') {
+                return redirect('/catalog/device')->with('error', 'Cannot remove the device. Because the device is still in use.');
+            } else {
+                // Tangani kesalahan lainnya
+                return redirect('/catalog/device')->with('error', 'Error deleting the device.');
+            }
+        }
     }
 }

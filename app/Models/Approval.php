@@ -30,4 +30,9 @@ class Approval extends Model
     {
         return $this->belongsTo(Condition::class, 'conditions_id');
     }
+
+    public function device()
+    {
+        return $this->belongsTo(Device::class, 'device_id');
+    }
 }

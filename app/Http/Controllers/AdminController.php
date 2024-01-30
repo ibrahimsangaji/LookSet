@@ -11,25 +11,38 @@ use App\Models\Rack;
 use App\Models\Software;
 use App\Models\CategoryStatus;
 use App\Models\Document;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     function index() {
-        return view('layouts/wellcome');
+        $totalAssets = Asset::count();
+        $totalInbound = Asset::whereIn('category_statuses_id', [1, 2])->count();
+
+        return view('layouts.wellcome', compact('totalAssets', 'totalInbound'));
     }
 
     function admin() {
-        return view('layouts/wellcome');
+        $totalAssets = Asset::count();
+        $totalInbound = Asset::whereIn('category_statuses_id', [1, 2])->count();
+
+        return view('layouts.wellcome', compact('totalAssets', 'totalInbound'));
     }
 
     function staff() {
-        return view('layouts/wellcome');
+        $totalAssets = Asset::count();
+        $totalInbound = Asset::whereIn('category_statuses_id', [1, 2])->count();
+
+        return view('layouts.wellcome', compact('totalAssets', 'totalInbound'));
     }
 
     function supervisor() {
-        return view('layouts/wellcome');
+        $totalAssets = Asset::count();
+        $totalInbound = Asset::whereIn('category_statuses_id', [1, 2])->count();
+
+        return view('layouts.wellcome', compact('totalAssets', 'totalInbound'));
     }
 
 
@@ -56,17 +69,12 @@ class AdminController extends Controller
     }
 
     function inventorys() {
-        // Mengambil data dengan join antara tabel documents dan assets
-        $documents = Document::join('assets', 'documents.asset_number', '=', 'assets.asset_number')
-        ->join('devices', 'assets.device_id', '=', 'devices.id')
-        ->join('racks', 'assets.rack_id', '=', 'racks.id')
-        ->join('category_statuses', 'assets.category_statuses_id', '=', 'category_statuses.id')
-        ->select('documents.*', 'devices.name as device_name', 'racks.explanation as rack_explanation', 'category_statuses.category as category')
-        ->whereIn('documents.category_statuses_id', [1, 2])
+        $assets = Asset::with(['device', 'rack', 'software', 'categorystatus', 'condition'])
+        ->whereIn('category_statuses_id', [1, 2])
         ->get();
 
         // Mengirim data ke view
-        return view('layouts.inventorys', compact('documents'));
+        return view('layouts.inventorys', compact('assets'));
     }
 
     function assets() {
@@ -76,17 +84,41 @@ class AdminController extends Controller
         // Mengambil data user
         $userRole = auth()->user()->role;
 
-        return view('layouts/assets', compact('assets'));
+        return view('layouts.assets', compact('assets', 'userRole'));
     }
 
-    function updateAssets() {
-        return view('layouts.updateAsset');
+    function deleteAssets() {
+        // Mengambil data assets dengan relasi device dan category_statuses
+        $assets = Asset::with(['device', 'categorystatus'])->get();
+
+        // Mengambil data user
+        $userRole = auth()->user()->role;
+
+        return view('layouts.deleteAsset', compact('assets', 'userRole'));
     }
 
-    function outbound() {
+    public function destroy(Asset $asset)
+    {
+        try {
+            $asset->delete();
+            return redirect('/assets/delete')->with('success', 'Asset deleted successfully!');
+        } catch (QueryException $e) {
+            // Tangani kesalahan lainnya
+            return redirect('/assets/delete')->with('error', 'Error deleting the Asset.');
+        }
+    }
+
+    function outbound(Request $request) {
+        $assets = Asset::where('category_statuses_id', [1, 2])->get();
         $locations = Location::all();
+        $data = [
+            ['name'=>'Outbound'],
+            ['name'=>'Inbound'],
+            ['name'=>'middlebound'],
 
-        return view('layouts.outbounds', compact('locations'));
+        ];
+
+        return view('layouts.outbounds', compact('locations', 'assets','data'));
     }
 
     function locations() {
@@ -104,6 +136,10 @@ class AdminController extends Controller
         return view('layouts.updateLocation');
     }
 
+    function editLocations() {
+        return view('layouts.editLocation');
+    }
+
 
     function catalog() {
         $totalUsers = User::count();
@@ -119,5 +155,9 @@ class AdminController extends Controller
             'totalRacks',
             'totalSoftwares'
         ));
+    }
+
+    function detailInformation() {
+        return view('layouts.detailInformation');
     }
 }
