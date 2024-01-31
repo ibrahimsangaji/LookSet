@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -66,7 +67,17 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
+        try {
+            $user->delete();
         return redirect('/catalog/user')->with('success', 'User deleted successfully!');
+        } catch (QueryException $e) {
+            // Menggunakan kode SQLSTATE[23000] untuk mendeteksi kesalahan referensi kunci asing
+            if ($e->getCode() == '23000') {
+                return redirect('/catalog/user')->with('error', 'Cannot erase client. Since client information is still utilized.');
+            } else {
+                // Tangani kesalahan lainnya
+                return redirect('/catalog/user')->with('error', 'Error deleting the user.');
+            }
+        }
     }
 }

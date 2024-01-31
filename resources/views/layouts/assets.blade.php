@@ -8,17 +8,12 @@
             <div class="card-header py-3 d-flex align-items-center">
                 <h3 class="font-weight-bold text-primary">Assets</h3>
 
-                @if(auth()->user()->role == 'supervisor')
+                @if($userRole == 'supervisor' || $userRole == 'admin')
                     <h3 class="font-weight-bold text-primary ml-auto">
-                        <a href="/assets/update">Update</a>
+                        <a href="/assets/delete">Delete</a>
                     </h3>
                 @endif
 
-                @if(auth()->user()->role == 'admin')
-                    <h3 class="font-weight-bold text-primary ml-auto">
-                        <a href="/assets/update">Update</a>
-                    </h3>
-                @endif
             </div>
 
             <div class="card-body">
@@ -37,7 +32,7 @@
                             @foreach ($assets as $asset)
                                 <tr>
                                     <td>{{ $asset->asset_number }}</td>
-                                    <td>STO-xxxxxx</td>
+                                    <td> </td>
                                     <td>{{ $asset->name }}</td>
                                     <td>{{ $asset->device->name }}</td>
                                     <td>{{ $asset->categorystatus->category }}</td>

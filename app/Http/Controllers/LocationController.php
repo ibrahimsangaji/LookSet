@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -56,6 +57,18 @@ class LocationController extends Controller
 
     public function destroy(Location $location)
     {
+        try {
+            $location->delete();
+            return redirect('/catalog/location')->with('success', 'Location deleted successfully!');
+        } catch (QueryException $e) {
+            // Menggunakan kode SQLSTATE[23000] untuk mendeteksi kesalahan referensi kunci asing
+            if ($e->getCode() == '23000') {
+                return redirect('/catalog/device')->with('error', 'Cannot remove the device. Because the device is still in use.');
+            } else {
+                // Tangani kesalahan lainnya
+                return redirect('/catalog/device')->with('error', 'Error deleting the device.');
+            }
+        }
         $location->delete();
         return redirect('/catalog/location')->with('success', 'Location deleted successfully!');
     }

@@ -82,20 +82,30 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/softwares/{software}', [SoftwareController::class, 'destroy'])->name('software.delete');
 
     Route::get('/assets',[AdminController::class, 'assets']);
-    Route::get('/assets/update',[AdminController::class, 'updateAssets']);
+    Route::get('/assets/delete',[AdminController::class, 'deleteAssets']);
+    Route::delete('/assets/{asset}', [AdminController::class, 'destroy'])->name('asset.delete');
+
     Route::get('/inventorys',[AdminController::class, 'inventorys']);
+
     Route::get('/locations',[AdminController::class, 'locations']);
     Route::get('/locations/detail',[AdminController::class, 'detailLocations']);
     Route::get('/locations/update',[AdminController::class, 'updateLocations']);
+    Route::get('/locations/edit',[AdminController::class, 'editLocations']);
+    Route::get('/locations/information',[AdminController::class, 'detailInformation']);
 
     Route::get('/inbounds', [AdminController::class, 'inbound'])->name('inbound.index');
-    Route::get('/returns', [AdminController::class, 'return']);
     Route::post('/inbound', [AsetController::class, 'inbound'])->name('inbound.process');
+    Route::get('/returns', [AdminController::class, 'return'])->name('return.index');
     Route::post('/return', [AsetController::class, 'return'])->name('return.process');
+
     Route::get('/documents', [DocumentController::class, 'showDocuments'])->name('documents.index');
-    Route::get('/create/documents', [DocumentController::class, 'createDocumentsFromApprovedAssets'])->name('documents.create');
+    Route::get('/documents/create', [DocumentController::class, 'createDocumentsFromApprovedAssets'])->name('documents.create');
+    Route::get('/documents/{document}/detail', [DocumentController::class, 'detailDocuments'])->name('documents.detail');
+    Route::get('/documents/{document}/download', [DocumentController::class, 'showPdf'])->name('documents.downloadPdf');
+
     Route::get('/approval', [ApprovalController::class, 'index'])->name('approval.index');
     Route::post('/approval/{id}', [ApprovalController::class, 'processApproval'])->name('approval.process');
+    Route::get('/approval/{asset}/detail', [ApprovalController::class, 'detailDocuments'])->name('asset.detail');
 
     Route::get('/outbounds', [AdminController::class, 'outbound'])->name('outbound.index');
     Route::post('/outbound', [AsetController::class, 'outbound'])->name('outbound.process');

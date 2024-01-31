@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rack;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class RackController extends Controller
@@ -54,7 +55,18 @@ class RackController extends Controller
 
     public function destroy(Rack $rack)
     {
-        $rack->delete();
-        return redirect('/catalog/rack')->with('success', 'Rack deleted successfully!');
+
+        try {
+            $rack->delete();
+            return redirect('/catalog/rack')->with('success', 'Rack deleted successfully!');
+        } catch (QueryException $e) {
+            // Menggunakan kode SQLSTATE[23000] untuk mendeteksi kesalahan referensi kunci asing
+            if ($e->getCode() == '23000') {
+                return redirect('/catalog/rack')->with('error', 'Cannot remove the Rack. Because the Rack is still in use.');
+            } else {
+                // Tangani kesalahan lainnya
+                return redirect('/catalog/rack')->with('error', 'Error deleting the Rack.');
+            }
+        }
     }
 }

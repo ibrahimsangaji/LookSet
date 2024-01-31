@@ -22,13 +22,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($documents as $document)
+                            @foreach ($assets as $asset)
                                 <tr>
-                                    <td>{{ $document->asset_number }}</td>
-                                    <td>{{ $document->name }}</td>
-                                    <td>{{ $document->device_name }}</td>
-                                    <td>{{ $document->category }}</td>
-                                    <td>{{ $document->rack_explanation }}</td>
+                                    <td>{{ $asset->asset_number }}</td>
+                                    <td>{{ $asset->name }}</td>
+                                    <td>{{ $asset->device->name }}</td>
+                                    <td>{{ $asset->CategoryStatus->category }}</td>
+                                    <td>{{ $asset->rack->explanation }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

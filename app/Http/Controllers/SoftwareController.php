@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Software;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class SoftwareController extends Controller
@@ -56,7 +57,17 @@ class SoftwareController extends Controller
 
     public function destroy(Software $software)
     {
-        $software->delete();
-        return redirect('/catalog/software')->with('success', 'Software deleted successfully!');
+        try {
+            $software->delete();
+            return redirect('/catalog/software')->with('success', 'Software deleted successfully!');
+        } catch (QueryException $e) {
+            // Menggunakan kode SQLSTATE[23000] untuk mendeteksi kesalahan referensi kunci asing
+            if ($e->getCode() == '23000') {
+                return redirect('/catalog/software')->with('error', 'Cannot remove the Software. Because the Software is still in use.');
+            } else {
+                // Tangani kesalahan lainnya
+                return redirect('/catalog/software')->with('error', 'Error deleting the Software.');
+            }
+        }
     }
 }
